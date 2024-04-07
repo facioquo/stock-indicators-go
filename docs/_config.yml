@@ -1,0 +1,60 @@
+# Ref: https://jekyllrb.com/docs/usage/
+# Local dev: bundle exec jekyll serve --livereload
+
+title: Stock Indicators for Go
+tagline: "Transform price quotes into trading insights."
+repository: facioquo/stock-indicators-go
+locale: en_US
+baseurl: ""
+url: "https://go.stockindicators.dev"
+
+# .NET site URL refs (e.g. {{site.dotnet.src}})
+dotnet:
+  repo: "https://github.com/DaveSkender/Stock.Indicators"
+  src: "https://github.com/DaveSkender/Stock.Indicators/blob/main/src"
+  discussions: https://github.com/DaveSkender/Stock.Indicators/discussions
+  charts: "https://raw.githubusercontent.com/DaveSkender/Stock.Indicators/main/docs/assets/charts"
+
+# social media information
+image:
+  path: /assets/social-banner.png
+  height: 640
+  width: 1280
+
+logo: /assets/icons/android-chrome-192x192.png
+
+social:
+  name: FacioQuo
+  links:
+  url: https://github.com/facioquo/stock-indicators-go
+
+author:
+  name: FacioQuo
+  url: https://github.com/facioquo/stock-indicators-go
+
+# site plugins and settings
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-last-modified-at
+  - jekyll-redirect-from
+  - jekyll-minifier
+
+exclude: []
+
+permalink: pretty
+
+defaults:
+  - scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "base"
+      image: /assets/social-banner.png
+
+# page collections
+collections:
+  indicators:
+    output: true
+    permalink: /:path
+    sort_by: "title"

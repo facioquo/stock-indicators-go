@@ -1,0 +1,61 @@
+name: Indicators
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    name: unit tests
+    runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    env:
+
+      # identifying primary configuration so only one reports coverage
+      IS_PRIMARY: ${{ matrix.os == 'ubuntu-latest' }}
+
+      # temporarily disable steps (remove variable when ready)
+      IS_READY: false
+
+    steps:
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build library
+        run: >
+          echo "TBD build"
+
+      - name: Test indicators
+        run: >
+          echo "TBD test"
+
+      # the remaining steps are only needed from one primary instance
+
+      - name: Post test summary
+        uses: bibipkins/dotnet-test-reporter@v1.4.1
+        if: env.IS_PRIMARY == 'true' && always() && env.IS_READY == 'true'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: ""
+          results-path:  ./test-indicators/**/*.trx
+          coverage-path: ./test-indicators/**/coverage.cobertura.xml
+          coverage-type: cobertura
+
+      - name: Publish coverage to Codacy
+        uses: codacy/codacy-coverage-reporter-action@v1
+        if: env.IS_PRIMARY == 'true' && env.IS_READY == 'true'
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./test-indicators/**/coverage.cobertura.xml

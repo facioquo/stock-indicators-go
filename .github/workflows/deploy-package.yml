@@ -1,0 +1,143 @@
+name: Deploy Go package
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        type: choice
+        options:
+          - staging
+          - pkg.go.dev
+        default: staging
+        required: true
+      preview:
+        description: Append preview suffix
+        type: boolean
+        default: true
+        required: true
+
+concurrency:
+  group: ${{ inputs.environment }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.compose.outputs.version }}
+
+    steps:
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v1.1.1
+        with:
+          versionSpec: "5.x"
+          preferLatestVersion: true
+
+      - name: Determine version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v1.1.1
+        with:
+          updateAssemblyInfo: true
+          useConfigFile: true
+          configFilePath: gitversion.yml
+
+      - name: Compose version
+        id: compose
+        run: |
+          COMPOSED_VERSION=${{ steps.gitversion.outputs.majorMinorPatch }}${{ inputs.preview && '-preview.' || '' }}${{ inputs.preview && steps.gitversion.outputs.preReleaseNumber || inputs.preview && github.run_number || '' }}
+          echo "version=$COMPOSED_VERSION" >> "$GITHUB_OUTPUT"
+          echo "COMPOSED_VERSION=$COMPOSED_VERSION" >> "$GITHUB_ENV"
+
+      - name: Update release notes URL
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "https://github.com/facioquo/stock-indicators-go/releases"
+          replace: "https://github.com/facioquo/stock-indicators-go/releases/tag/${{ steps.compose.outputs.version }}"
+          regex: false
+
+      - name: Build library
+        run: >
+          echo "TBD build v${{ steps.compose.outputs.version }}"
+
+      - name: Generate package
+        run: >
+          echo "TBD package v${{ steps.compose.outputs.version }}"
+
+      - name: Save package
+        uses: actions/upload-artifact@v3
+        with:
+          name: packages
+          path: package-dist
+
+      - name: Summary output
+        run: |
+          {
+            echo "| Version No. | Component                                       |"
+            echo "| :---------- | :---------------------------------------------- |"
+            echo "| Major       | ${{ steps.gitversion.outputs.major }}           |"
+            echo "| Minor       | ${{ steps.gitversion.outputs.minor }}           |"
+            echo "| Patch       | ${{ steps.gitversion.outputs.patch }}           |"
+            echo "| Base        | ${{ steps.gitversion.outputs.majorMinorPatch }} |"
+            echo "| Composed    | ${{ steps.compose.outputs.COMPOSED_VERSION }}   |"
+          } >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    environment:
+      name: ${{ inputs.environment }}
+      url: "${{ vars.GO_DOWNLOAD_PREFIX }}${{ needs.build.outputs.version }}"
+
+    steps:
+
+      - name: Pre-flight summary
+        run: |
+          {
+            echo "| Parameter       | Value                              |"
+            echo "| :-------------- | :--------------------------------- |"
+            echo "| Environment     | ${{ inputs.environment }}          |"
+            echo "| Publishing URL  | ${{ vars.GO_PUBLISH_URL }}      |"
+            echo "| Download URL    | ${{ vars.GO_DOWNLOAD_PREFIX }}  |"
+            echo "| Version ID      | ${{ needs.build.outputs.version }} |"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Download package
+        uses: actions/download-artifact@v3
+        with:
+          name: packages
+          path: package-dist
+
+      - name: Publish to staging
+        if: inputs.environment == 'staging'
+        run: |
+          echo "TBD publish v${{ needs.build.outputs.version }}"
+
+      - name: Publish to Go.dev
+        if: inputs.environment == 'pkg.go.dev'
+        run: |
+          echo "TBD publish v${{ needs.build.outputs.version }}"
+
+      - name: Tag and draft release note
+        uses: ncipollo/release-action@v1
+        if: inputs.environment == 'pkg.go.dev'
+        with:
+          body: |
+            We’ve released a new Stock Indicators for Go package.
+            See [stock-indicators @ pkg.go.dev](${{ vars.GO_DOWNLOAD_PREFIX }}${{ needs.build.outputs.version }}) for more information.
+          generateReleaseNotes: true
+          draft: true
+          makeLatest: ${{ !inputs.preview }}
+          prerelease: ${{ inputs.preview }}
+          tag: ${{ needs.build.outputs.version }}
+          commit: ${{ github.ref_name }}
