@@ -45,7 +45,7 @@ jobs:
 
       - name: Post test summary
         uses: bibipkins/dotnet-test-reporter@v1.4.1
-        if: env.IS_PRIMARY == 'true' && always() && env.IS_READY
+        if: env.IS_PRIMARY == 'true' && always() && env.IS_READY == 'true'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-title: ""
@@ -55,7 +55,7 @@ jobs:
 
       - name: Publish coverage to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
-        if: env.IS_PRIMARY == 'true' && env.IS_READY
+        if: env.IS_PRIMARY == 'true' && env.IS_READY == 'true'
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: ./test-indicators/**/coverage.cobertura.xml
