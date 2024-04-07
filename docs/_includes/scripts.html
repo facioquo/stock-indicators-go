@@ -1,0 +1,9 @@
+{%- if page.lazy-images == true -%}
+<script async src="/assets/js/lazysizes.min.js"></script>
+{%- endif -%}
+
+{%- if jekyll.environment == 'production' -%}
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WSPMNCW04P"></script>
+<script async src="/assets/js/ga.js"></script>
+{%- endif -%}
