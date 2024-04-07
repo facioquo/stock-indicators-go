@@ -44,7 +44,7 @@ Use the [Discussions](https://github.com/DaveSkender/Stock.Indicators/discussion
 
 ## Developing
 
-- Read this first: [A Step by Step Guide to Making Your First GitHub Contribution](https://codeburst.io/a-step-by-step-guide-to-making-your-first-github-contribution-5302260a2940).  I also have a discussion [on Forking](https://github.com/facioquo/stock-indicators-go/discussions/503) if you have questions.
+- Read this first: [A Step by Step Guide to Making Your First GitHub Contribution](https://codeburst.io/a-step-by-step-guide-to-making-your-first-github-contribution-5302260a2940).  I also have a discussion [on Forking](https://github.com/DaveSkender/Stock.Indicators/discussions/503) if you have questions.
 - If you want to work on something specific, please mention your intention on the related [Issue](https://github.com/facioquo/stock-indicators-go/issues).  If an Issue does not exist for your contribution, please create one before starting.  This will help us reserve that feature and avoid duplicative efforts.
 - If you are adding a new indicator, the easiest way to do this is to copy the folder of an existing indicator and rename everything using the same naming conventions and taxonomy.  All new indicators should include [tests](#testing).
 - Do not commingle multiple contributions on different topics.  Please keep changes small and separate.
@@ -59,15 +59,7 @@ Use the [Discussions](https://github.com/DaveSkender/Stock.Indicators/discussion
 
 ### Performance benchmarking
 
-Running the `Tests.Performance` console application in `Release` mode will produce [benchmark performance data](https://go.stockindicators.dev/performance/) that we include on our documentation site.
-
-```bash
-# run all performance benchmarks
-dotnet run -c Release
-
-# run individual performance benchmark
-dotnet run -c Release --filter *.GetAdx
-```
+[...]
 
 ## Documentation
 
@@ -105,7 +97,7 @@ By submitting changes to this repo you are also acknowledging and agree to the t
 When ready, submit a [Pull Request](https://help.github.com/pull-requests) with a clear description of what you've done and why it's important.
 Always write a clear log message for your commits. One-line messages are fine for most changes.
 
-After a Pull Request is reviewed, accepted, and [squash] merged to `main`, we may batch changes before publishing a new package version to the [public Go repository](https://www.Go.org/packages/Skender.Stock.Indicators).  Please be patient with turnaround time.
+After a Pull Request is reviewed, accepted, and [squash] merged to `main`, we may batch changes before publishing a new package version to the [public Go repository](https://pkg.go.dev).  Please be patient with turnaround time.
 
 ## Code reviews and administration
 
@@ -113,9 +105,8 @@ If you want to contribute administratively, do code reviews, or provide general 
 
 ## Standards and design guidelines
 
-- [Guiding principles for this project](https://github.com/facioquo/stock-indicators-go/discussions/648)
-- [.NET Framework Design Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines)
-- [Go Best Practices](https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/Go)
+- [Guiding principles for this project](https://github.com/DaveSkender/Stock.Indicators/discussions/648)
+- [Go Best Practices](https://go.dev/doc/effective_go)
 - [Semantic Version 2.0](https://semver.org)
 
 ## Versioning
@@ -145,7 +136,7 @@ This repository uses a standard Apache 2.0 open-source license.  It enables open
 
 ## Contact info
 
-[Start a new discussion](https://github.com/facioquo/stock-indicators-go/discussions) or [submit an issue](https://github.com/facioquo/stock-indicators-go/issues) if it is publicly relevant.  You can also direct message [@daveskender](https://twitter.com/messages/compose?recipient_id=27475431).
+[Start a new discussion](https://github.com/DaveSkender/Stock.Indicators/discussions) or [submit an issue](https://github.com/facioquo/stock-indicators-go/issues) if it is publicly relevant.  You can also direct message [@daveskender](https://twitter.com/messages/compose?recipient_id=27475431).
 
 Thanks,
 Dave Skender

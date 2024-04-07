@@ -59,7 +59,7 @@ See [individual indicator pages]({{site.baseurl}}/indicators/) for specific usag
 
 More examples available:
 
-- [Example usage code]({{site.baseurl}}/examples/#content) in a simple working console application
+- [Example usage code]({{site.baseurl}}/guide/#content) in a simple working console application
 - [Demo site](https://charts.stockindicators.dev) (a stock chart)
 
 ## Historical quotes

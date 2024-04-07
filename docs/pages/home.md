@@ -43,7 +43,7 @@ See more [usage examples]({{site.baseurl}}/guide/#example-usage).
 
 ## Use chaining for unique insights
 
-Optional chaining enables advanced uses cases; such as, indicator of indicators, [slope]({{site.baseurl}}/indicators/Slope/#content) (direction) of any result, or [moving average]({{site.baseurl}}/indicators/#moving-average) of an indicator.
+Optional chaining enables advanced uses cases; such as, indicator of indicators, slope (direction) of any result, or [moving average]({{site.baseurl}}/indicators/#moving-average) of an indicator.
 
 ```go
 [...]

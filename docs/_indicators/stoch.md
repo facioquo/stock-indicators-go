@@ -29,7 +29,7 @@ Created by George Lane, the [Stochastic Oscillator](https://en.wikipedia.org/wik
 
 **`dFactor`** _`double`_ - Optional. Weight of %D in the %J calculation.  Must be greater than 0. Default is 2.
 
-**`movingAverageType`** _`MaType`_ - Optional. Type of moving average (SMA or SMMA) used for smoothing.  See [MaType options](#matype-options) below.  Default is `MaType.SMA`.
+**`movingAverageType`** _`MaType`_ - Optional. Type of moving average (SMA or SMMA) used for smoothing.  Default is `MaType.SMA`.
 
 ### Historical quotes requirements
 

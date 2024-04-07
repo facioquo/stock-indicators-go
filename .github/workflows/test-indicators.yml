@@ -25,6 +25,9 @@ jobs:
       # identifying primary configuration so only one reports coverage
       IS_PRIMARY: ${{ matrix.os == 'ubuntu-latest' }}
 
+      # temporarily disable steps (remove variable when ready)
+      IS_READY: false
+
     steps:
 
       - name: Checkout source
@@ -42,7 +45,7 @@ jobs:
 
       - name: Post test summary
         uses: bibipkins/dotnet-test-reporter@v1.4.1
-        if: env.IS_PRIMARY == 'true' && always()
+        if: env.IS_PRIMARY == 'true' && always() && env.IS_READY
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-title: ""
@@ -52,7 +55,7 @@ jobs:
 
       - name: Publish coverage to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
-        if: env.IS_PRIMARY == 'true'
+        if: env.IS_PRIMARY == 'true' && env.IS_READY
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: ./test-indicators/**/coverage.cobertura.xml
