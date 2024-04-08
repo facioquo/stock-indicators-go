@@ -6,4 +6,4 @@
 
 We've just started building our **Stock Indicators for Go** package.
 
-> See our [contributing guidelines](docs/contributing.md) for information on how you can help.
+> See our [contributing guidelines](https://github.com/facioquo/stock-indicators-go/blob/main/docs/contributing.md) for information on how you can help.
