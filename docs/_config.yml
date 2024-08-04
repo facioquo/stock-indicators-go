@@ -41,6 +41,9 @@ plugins:
   - jekyll-redirect-from
   - jekyll-minifier
 
+include:
+  - _headers
+
 exclude: []
 
 permalink: pretty
