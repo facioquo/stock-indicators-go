@@ -14,7 +14,9 @@ jobs:
   test:
     name: test
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: docs
     env:
       BUNDLE_GEMFILE: ${{github.workspace}}/docs/GemFile
 
@@ -25,33 +27,35 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          working-directory: docs
           ruby-version: 3.3
 
-      - name: Install GEMs
-        working-directory: docs
+      - name: Install dependencies
         run: |
           pwd
           bundle install
+          npm install -g pa11y-ci
+
+      - name: Replace "go.stockindicators.dev"
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "https://go.stockindicators.dev"
+          replace: "http://127.0.0.1:4000"
+          regex: false
 
       - name: Build site
-        working-directory: docs
         run: bundle exec jekyll build
 
       - name: Serve site
-        working-directory: docs
-        run: bundle exec jekyll serve --detach
+        run: bundle exec jekyll serve --port 4000 --detach
 
       - name: Show environment
-        working-directory: docs
         run: npx pa11y --environment
 
       - name: Test accessibility
-        working-directory: docs
         run: >
-          npx pa11y-ci
-            --sitemap http://127.0.0.1:4000/sitemap.xml
-            --config ./.pa11yci
+          pa11y-ci
+          --sitemap http://127.0.0.1:4000/sitemap.xml
+          --config ./.pa11yci
 
       - name: Kill site (failsafe)
         if: always()
